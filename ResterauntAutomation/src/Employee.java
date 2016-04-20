@@ -12,8 +12,8 @@ public class Employee {
      */
     public Employee(int employeeID,
         String ssn, String phone, String address,
-        String firstname, String lastname, float salary,
-        float hours, String password)
+        String firstname, String lastname, double salary,
+        double hours, String password)
     {
         employeeInfo = new EmployeeInfo(employeeID, ssn, phone,
             address, firstname, lastname, salary, hours, password);
@@ -50,10 +50,11 @@ public class Employee {
     /**
      * This method calculates the employee's salary.
      */
-    public float calculateSalary(EmployeeInfo emp){
-        float num_of_hours = emp.getHours();
-        float emp_salary;
-        emp_salary = num_of_hours * 10; //hourly wage is $10
+    public double calculateSalary(EmployeeInfo emp)
+    {
+        double num_of_hours = emp.getHours();
+        double emp_salary;
+        emp_salary = num_of_hours * emp.getSalary(); //hourly wage is $10
         emp.setHours(0);
         emp.setSalary(emp_salary);
         return emp_salary;

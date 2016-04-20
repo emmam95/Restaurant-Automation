@@ -14,8 +14,8 @@ public class EmployeeInfo
     private String address;     // address
     private String firstName;   // first name of employee
     private String lastName;    // last name for employee
-    private float  salary;      // salary (per hour)
-    private float  hours;       // number of hours worked
+    private double  salary;      // salary (per hour)
+    private double  hours;       // number of hours worked
     private String password;    // password for employee profile
 
 
@@ -39,8 +39,8 @@ public class EmployeeInfo
         String address,
         String firstName,
         String lastName,
-        float salary,
-        float hours,
+        double salary,
+        double hours,
         String password)
     {
         this.employeeID = employeeID;
@@ -104,22 +104,22 @@ public class EmployeeInfo
         this.lastName = name;
     }
 
-    public float getSalary()
+    public double getSalary()
     {
         return salary;
     }
 
-    public void setSalary(float salary)
+    public void setSalary(double salary)
     {
         this.salary = salary;
     }
 
-    public float getHours()
+    public double getHours()
     {
         return hours;
     }
 
-    public void setHours(float hrs)
+    public void setHours(double hrs)
     {
         this.hours = hrs;
     }
