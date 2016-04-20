@@ -32,6 +32,7 @@ public class PseudoDatabase
         s.append(" - ");
         s.append(temp.getFirstName())
         s.append(temp.getLastName());
+        System.out.println(s);
       }
     }
 }
