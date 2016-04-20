@@ -32,8 +32,8 @@ public class Employee {
      */
     public void updateEmployeeInfo(int employeeID,
             String ssn, String phone, String address,
-            String firstname, String lastname, float salary,
-            float hours, String password){
+            String firstname, String lastname, double salary,
+            double hours, String password){
 
         employeeInfo.setEmployeeID(employeeID);
         employeeInfo.setSSN(ssn);
@@ -50,13 +50,12 @@ public class Employee {
     /**
      * This method calculates the employee's salary.
      */
-    public double calculateSalary(EmployeeInfo emp)
+    public double calculateSalary()
     {
-        double num_of_hours = emp.getHours();
+        double num_of_hours = employeeInfo.getHours();
         double emp_salary;
-        emp_salary = num_of_hours * emp.getSalary(); //hourly wage is $10
-        emp.setHours(0);
-        emp.setSalary(emp_salary);
+        emp_salary = num_of_hours * employeeInfo.getSalary(); //hourly wage is $10
+        employeeInfo.setHours(0); // reset the number of hours worked
         return emp_salary;
     }
 }
