@@ -15,10 +15,12 @@ import meghankh.loginwindow.R;
 public class FetchData {
 
     Employee[] employeeArr;
+    int numberOfEmployee;
 
     public FetchData()
     {
-        employeeArr = new Employee[1024];
+        employeeArr = new Employee[128];
+        numberOfEmployee = 0;
     }
 
     public int parseData(Context context)
@@ -42,7 +44,7 @@ public class FetchData {
         }
         int numRecords = 0;
         int index = 0;
-        int employeeID;
+        int employeeID = 0;
         int inactive = 0;
         String ssn = "none";
         String phone = "none";
@@ -61,6 +63,16 @@ public class FetchData {
             {
                 employeeID = numRecords;
                 employeeArr[numRecords] = new Employee(employeeID, inactive, ssn, phone, address, firstName, lastName, salary, hours, password);
+                employeeID = numRecords + 1;
+                inactive = 0;
+                ssn = "none";
+                phone = "none";
+                address = "none";
+                firstName = "none";
+                lastName = "none";
+                salary = 0.0;
+                hours = 0.0;
+                password = "none";
                 numRecords++;
             }
             else if (bytes[index] == 124)
@@ -92,6 +104,26 @@ public class FetchData {
                 currentCell[cellIndex] = bytes[index];
             }
         }
+        numberOfEmployee = numRecords;
         return 1;
+    }
+
+    public Employee getEmployee(int employeeID)
+    {
+        return employeeArr[employeeID];
+    }
+
+    public int lookUpEmployeeID(String firstName, String lastName)
+    {
+        for (int i = 0; i < numberOfEmployee; i++)
+        {
+            Employee CurrentEmployee = employeeArr[i];
+            if (CurrentEmployee.getEmployeeInfo().getFirstName().equals(firstName)
+                && CurrentEmployee.getEmployeeInfo().getFirstName().equals(lastName))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
