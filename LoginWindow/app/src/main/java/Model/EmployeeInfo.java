@@ -4,12 +4,13 @@ package Model;
  * Write a one-sentence summary of your class here. Follow it with additional
  * details about its purpose, what abstraction it represents, and how to use it.
  *
- * @author Emma Manchester
+ * @author Emma Manchester, Updated- Meghan April 22nd
  * @version Apr 19, 2016
  */
 public class EmployeeInfo
 {
-    private int    employeeID;  // id for employee
+    private int employeeID;  // id for employee
+    private int inactive;
     private String SSN;         // social security number for employee
     private String phone;       // phone number
     private String address;     // address
@@ -35,6 +36,7 @@ public class EmployeeInfo
      */
     public EmployeeInfo(
         int employeeID,
+        int inactive,
         String SSN,
         String phone,
         String address,
@@ -44,6 +46,7 @@ public class EmployeeInfo
         double hours,
         String password)
     {
+        this.inactive = inactive;
         this.employeeID = employeeID;
         this.SSN = SSN;
         this.phone = phone;
