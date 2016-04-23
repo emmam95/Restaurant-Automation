@@ -1,15 +1,21 @@
+package Model;
 import java.util.*;
 
 public class PseudoDatabase
 {
     private Map<Integer, Employee> Map_ID_Employee;
 
-
+    int idCounter = 0;
     public PseudoDatabase()
     {
         Map_ID_Employee = new HashMap<Integer, Employee>();
     }
 
+    public int generateID()
+    {
+        idCounter++;
+        return idCounter;
+    }
 
     public void addEmployee(Employee employee)
     {

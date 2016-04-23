@@ -28,8 +28,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import Model.PseudoDatabase;
 
 
 /**
@@ -54,6 +60,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private PseudoDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +96,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             public void onClick(View view) {
                 //Change Intent
+                File path = context.getFilesDir();
+                File file = new File(path, "text.txt");
+
+                try {
+                    FileOutputStream stream = new FileOutputStream(file);
+                    try {
+                        stream.write("hello".getBytes());
+                    } catch (IOException e) {
+
+                    }finally {
+                        try {
+                            stream.close();
+                        } catch (IOException e) {
+                        }
+                    }
+                }
+                catch (FileNotFoundException e) {
+                }
                 Intent intent = new Intent(context, Register.class);
                 startActivity(intent);
             }
