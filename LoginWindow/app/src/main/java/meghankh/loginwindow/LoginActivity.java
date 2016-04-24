@@ -70,6 +70,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            String errorMessageText = extras.getString("Error");
+            TextView errorMessage = (TextView) findViewById(R.id.errorMessage);
+            errorMessage.setText(errorMessageText);
+        }
+
         // Set up the login form.
         // mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         // populateAutoComplete();
@@ -116,17 +124,27 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 Log.d("TEST", "Clicked Signin");
                 TextView firstName = (TextView) findViewById(R.id.firstName);
                 TextView lastName = (TextView) findViewById(R.id.lastName);
+                TextView password = (TextView) findViewById(R.id.password);
                 Log.d("TEST", "Lookup " + firstName.getText().toString() + " " + lastName.getText().toString());
                 int employeeID = fetch.lookUpEmployeeID(firstName.getText().toString(), lastName.getText().toString());
                 Log.d("TEST", "Found ID " + employeeID);
                 if (employeeID > 0) {
-                    Intent intent = new Intent(context, ViewEmployeeInfo.class);
-                    intent.putExtra("employeeID", Integer.toString(employeeID));
-                    startActivity(intent);
+                    if (fetch.getEmployee(employeeID).getEmployeeInfo().getPassword().equals(password.getText().toString())) {
+                        Intent intent = new Intent(context, ViewEmployeeInfo.class);
+                        intent.putExtra("employeeID", Integer.toString(employeeID));
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        intent.putExtra("Error", "There was an issue with your Name/Password Combination. Please Try Again.");
+                        startActivity(intent);
+                    }
                 }
                 else
                 {
                     Intent intent = new Intent(context, LoginActivity.class);
+                    intent.putExtra("Error", "There was an issue with your Name/Password Combination. Please Try Again.");
                     startActivity(intent);
                 }
             }

@@ -29,7 +29,7 @@ public class Register extends ActionBarActivity {
         setContentView(R.layout.activity_register);
         Button createAccountButton = (Button) findViewById(R.id.create_Account_But);
         final Context context = this;
-        Log.d("TEST", "PLEASE DISPLAY LOGCAT");
+        Log.d("TEST", "PLEASE DISPLAY LOG CAT");
         FetchData fetch = new FetchData();
         fetch.parseData(context);
         employeeID = fetch.getNumberOfEmployee() + 1;
