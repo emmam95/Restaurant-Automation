@@ -26,6 +26,14 @@
             android:name=".Register"
             android:label="@string/title_activity_register" >
         </activity>
+        <activity
+            android:name=".EditInfo"
+            android:label="@string/title_activity_edit_info" >
+        </activity>
+        <activity
+            android:name=".ViewEmployeeInfo"
+            android:label="@string/title_activity_view_employee_info" >
+        </activity>
     </application>
 
 </manifest>

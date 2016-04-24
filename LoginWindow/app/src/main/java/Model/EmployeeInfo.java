@@ -58,6 +58,10 @@ public class EmployeeInfo
         this.password = password;
     }
 
+    public int getInactive() { return inactive; }
+
+    public void setInactive(int state) { inactive = state; }
+
     public int getEmployeeID()
     {
         return employeeID;

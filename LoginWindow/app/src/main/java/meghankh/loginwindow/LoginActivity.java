@@ -27,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.FetchData;
 import Model.PseudoDatabase;
 
 
@@ -61,6 +63,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mProgressView;
     private View mLoginFormView;
     private PseudoDatabase database;
+    FetchData fetch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,59 +71,69 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        // mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        // populateAutoComplete();
+//
+        // mPasswordView = (EditText) findViewById(R.id.password);
+        // mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        //     @Override
+        //     public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+        //         if (id == R.id.login || id == EditorInfo.IME_NULL) {
+        //             attemptLogin();
+        //             return true;
+        //         }
+        //         return false;
+        //     }
+        // });
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        // Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        // mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        //     @Override
+        //     public void onClick(View view) {
+        //         attemptLogin();
+        //     }
+        // });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
         Button registerButton = (Button) findViewById(R.id.register_but);
+        Button email_sign_in_button = (Button) findViewById(R.id.email_sign_in_button);
         final Context context = this;
+
+        fetch = new FetchData();
+        fetch.parseData(context);
+        Log.d("TEST", "Parsed Data");
+
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Change Intent
-                File path = context.getFilesDir();
-                File file = new File(path, "text.txt");
-
-                try {
-                    FileOutputStream stream = new FileOutputStream(file);
-                    try {
-                        stream.write("hello".getBytes());
-                    } catch (IOException e) {
-
-                    }finally {
-                        try {
-                            stream.close();
-                        } catch (IOException e) {
-                        }
-                    }
-                }
-                catch (FileNotFoundException e) {
-                }
-                Intent intent = new Intent(context, Register.class);
-                startActivity(intent);
+            Intent intent = new Intent(context, Register.class);
+            startActivity(intent);
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        email_sign_in_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("TEST", "Clicked Signin");
+                TextView firstName = (TextView) findViewById(R.id.firstName);
+                TextView lastName = (TextView) findViewById(R.id.lastName);
+                Log.d("TEST", "Lookup " + firstName.getText().toString() + " " + lastName.getText().toString());
+                int employeeID = fetch.lookUpEmployeeID(firstName.getText().toString(), lastName.getText().toString());
+                Log.d("TEST", "Found ID " + employeeID);
+                if (employeeID > 0) {
+                    Intent intent = new Intent(context, ViewEmployeeInfo.class);
+                    intent.putExtra("employeeID", Integer.toString(employeeID));
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        // mLoginFormView = findViewById(R.id.login_form);
+        // mProgressView = findViewById(R.id.login_progress);
     }
 
     private void populateAutoComplete() {
