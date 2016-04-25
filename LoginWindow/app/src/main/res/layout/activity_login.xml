@@ -17,6 +17,17 @@
         <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Restaurant Automation"
+                android:id="@+id/pageheader"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textSize="30dp" />
+
             <EditText android:id="@+id/firstName" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="First Name"
                 android:maxLines="1"
@@ -67,7 +78,8 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="text"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textColor="#FFFF6856" />
 
             <Button
                 android:layout_width="355dp"
@@ -79,6 +91,14 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView2"
+        android:layout_gravity="right" />
 
     <Button
         android:layout_width="wrap_content"

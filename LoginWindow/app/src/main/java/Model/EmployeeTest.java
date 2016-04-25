@@ -1,3 +1,5 @@
+package Model;
+
 import junit.framework.*;
 
 public class EmployeeTest
@@ -5,18 +7,18 @@ public class EmployeeTest
 {
     private Employee bob;
 
-
     public EmployeeTest()
     {
         // nothing to initialize
     }
-
 
     public void setUp()
     {
         bob =
             new Employee(
                 123,
+                0,
+                0,
                 "123-45-6789",
                 "540-123-4567",
                 "123 Address Dr, Blacksburg VA, 24060",
@@ -26,7 +28,6 @@ public class EmployeeTest
                 34.75,
                 "password");
     }
-
 
     public void testUpdate()
     {

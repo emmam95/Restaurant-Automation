@@ -1,3 +1,5 @@
+package Model;
+
 import junit.framework.*;
 
 
@@ -12,9 +14,23 @@ public class EmployeeInfoTest extends TestCase
 
     public void setUp()
     {
-        emp = new EmployeeInfo(12345, "123-45-6789", "540-123-4567",
+        emp = new EmployeeInfo(12345, 0, 0, "123-45-6789", "540-123-4567",
             "123 Address Dr, Blacksburg VA, 24060", "Bob", "Jones",
             7.25, 40.0, "password");
+    }
+
+    public void testManager()
+    {
+        assertEquals(0, emp.getManager());
+        emp.setManager(1);
+        assertEquals(1, emp.getManager());
+    }
+
+    public void testInactive()
+    {
+        assertEquals(0, emp.getInactive());
+        emp.setInactive(1);
+        assertEquals(1, emp.getInactive());
     }
 
     public void testPassword()
