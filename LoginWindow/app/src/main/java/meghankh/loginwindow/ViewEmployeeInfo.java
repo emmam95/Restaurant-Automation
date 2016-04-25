@@ -20,12 +20,12 @@ import Model.FetchData;
 import Model.Utils;
 import Model.WriteData;
 
-
 public class ViewEmployeeInfo extends ActionBarActivity {
 
     int employeeID;
     Employee employee;
     FetchData fetch;
+    int userID;
     int userIsManager;
 
     @Override
@@ -42,6 +42,7 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         {
             employeeID = new Integer(extras.getString("employeeID")).intValue();
             Log.d("TEST", "employeeID" + employeeID);
+            userID = new Integer(extras.getString("userID")).intValue();
             userIsManager = new Integer(extras.getString("userIsManager")).intValue();
             Log.d("TEST", extras.getString("userIsManager"));
         }
@@ -99,12 +100,21 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
         Button lookupButton = (Button) findViewById(R.id.lookupButton);
 
+        TextView terminatedMessage = (TextView) findViewById(R.id.terminatedMessage);
+        terminatedMessage.setVisibility(View.INVISIBLE);
+
         if (userIsManager == 0)
         {
             fireButton.setVisibility(View.INVISIBLE);
             lookupFirstName.setVisibility(View.INVISIBLE);
             lookupLastName.setVisibility(View.INVISIBLE);
             lookupButton.setVisibility(View.INVISIBLE);
+        }
+
+        if (employee.getEmployeeInfo().getInactive() == 1)
+        {
+            fireButton.setVisibility(View.INVISIBLE);
+            terminatedMessage.setVisibility(View.VISIBLE);
         }
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -119,11 +129,16 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         fireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, LoginActivity.class);
+                Intent intent = new Intent(context, ViewEmployeeInfo.class);
                 employee.getEmployeeInfo().setInactive(1);
                 fetch.updateEmployee(employee);
                 WriteData writer = new WriteData();
                 writer.updateDatabase(context, fetch.getEmployeeArray(), fetch.getNumberOfEmployee());
+                Bundle extras = new Bundle();
+                extras.putString("employeeID", Integer.toString(employeeID));
+                extras.putString("userID", Integer.toString(userID));
+                extras.putString("userIsManager", Integer.toString(userIsManager));
+                intent.putExtras(extras);
                 Log.d("TEST", "Terminated Activity" + employeeID);
                 startActivity(intent);
             }
@@ -132,13 +147,20 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         lookupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ViewEmployeeInfo.class);
                 EditText lookupFirstName = (EditText) findViewById(R.id.lookupFirstName);
                 EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
                 int lookupID = fetch.lookUpEmployeeID(lookupFirstName.getText().toString(), lookupLastName.getText().toString());
                 if (lookupID > 0) {
+                    Intent intent;
+                    if (userID == lookupID) {
+                        intent = new Intent(context, EditInfo.class);
+                    }
+                    else {
+                        intent = new Intent(context, ViewEmployeeInfo.class);
+                    }
                     Bundle extras = new Bundle();
                     extras.putString("employeeID", Integer.toString(lookupID));
+                    extras.putString("userID", Integer.toString(userID));
                     extras.putString("userIsManager", Integer.toString(userIsManager));
                     intent.putExtras(extras);
                     Log.d("TEST", "Lookup Activity" + employeeID);
@@ -146,8 +168,10 @@ public class ViewEmployeeInfo extends ActionBarActivity {
                 }
                 else
                 {
+                    Intent intent = new Intent(context, ViewEmployeeInfo.class);
                     Bundle extras = new Bundle();
                     extras.putString("employeeID", Integer.toString(employeeID));
+                    extras.putString("userID", Integer.toString(userID));
                     extras.putString("userIsManager", Integer.toString(userIsManager));
                     intent.putExtras(extras);
                     Log.d("TEST", "Lookup Activity Failed" + employeeID);

@@ -9,13 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.CheckBox;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import Model.Employee;
 import Model.FetchData;
@@ -55,9 +50,10 @@ public class Register extends ActionBarActivity {
                 Log.d("TEST", "Enter Data.");
                 WriteData writeData = new WriteData();
                 writeData.addEmployee(context, employee);
-                Intent intent = new Intent(context, ViewEmployeeInfo.class);
+                Intent intent = new Intent(context, EditInfo.class);
                 Bundle extras = new Bundle();
                 extras.putString("employeeID", Integer.toString(employeeID));
+                extras.putString("userID", Integer.toString(employeeID));
                 extras.putString("userIsManager", Integer.toString(isManager));
                 intent.putExtras(extras);
                 Log.d("TEST", "Next Activity" + employeeID);

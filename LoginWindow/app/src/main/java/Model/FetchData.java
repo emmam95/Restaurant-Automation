@@ -2,7 +2,6 @@ package Model;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -34,6 +34,10 @@
             android:name=".ViewEmployeeInfo"
             android:label="@string/title_activity_view_employee_info" >
         </activity>
+        <activity
+            android:name=".TipCalculatorActivity"
+            android:label="@string/title_activity_tip_calculator" >
+        </activity>
     </application>
 
 </manifest>

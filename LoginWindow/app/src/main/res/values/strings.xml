@@ -7,5 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_edit_info">EditInfo</string>
     <string name="title_activity_view_employee_info">ViewEmployeeInfo</string>
+    <string name="title_activity_tip_calculator">TipCalculatorActivity</string>
 
 </resources>

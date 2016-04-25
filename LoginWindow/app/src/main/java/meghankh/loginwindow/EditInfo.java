@@ -9,12 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import Model.Employee;
 import Model.EmployeeInfo;
@@ -29,6 +26,7 @@ public class EditInfo extends ActionBarActivity {
     Employee employee;
     FetchData fetch;
     int userIsManager;
+    int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +43,7 @@ public class EditInfo extends ActionBarActivity {
             employeeID = new Integer(extras.getString("employeeID")).intValue();
             Log.d("TEST", "employeeID" + employeeID);
             userIsManager = new Integer(extras.getString("userIsManager")).intValue();
+            userID = new Integer(extras.getString("userID")).intValue();
             Log.d("TEST", extras.getString("userIsManager"));
         }
         File path = context.getFilesDir();
@@ -128,6 +127,7 @@ public class EditInfo extends ActionBarActivity {
                 Intent intent = new Intent(context, EditInfo.class);
                 Bundle extras = new Bundle();
                 extras.putString("employeeID", Integer.toString(employeeID));
+                extras.putString("userID", Integer.toString(userID));
                 extras.putString("userIsManager", Integer.toString(userIsManager));
                 intent.putExtras(extras);
                 Log.d("TEST", "update Activity" + employeeID);
@@ -154,9 +154,16 @@ public class EditInfo extends ActionBarActivity {
                 EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
                 int lookupID = fetch.lookUpEmployeeID(lookupFirstName.getText().toString(), lookupLastName.getText().toString());
                 if (lookupID > 0) {
-                    Intent intent = new Intent(context, ViewEmployeeInfo.class);
+                    Intent intent;
+                    if (userID == lookupID) {
+                        intent = new Intent(context, EditInfo.class);
+                    }
+                    else {
+                        intent = new Intent(context, ViewEmployeeInfo.class);
+                    }
                     Bundle extras = new Bundle();
                     extras.putString("employeeID", Integer.toString(lookupID));
+                    extras.putString("userID", Integer.toString(userID));
                     extras.putString("userIsManager", Integer.toString(userIsManager));
                     intent.putExtras(extras);
                     Log.d("TEST", "Lookup Activity" + employeeID);
@@ -167,6 +174,7 @@ public class EditInfo extends ActionBarActivity {
                     Intent intent = new Intent(context, EditInfo.class);
                     Bundle extras = new Bundle();
                     extras.putString("employeeID", Integer.toString(employeeID));
+                    extras.putString("userID", Integer.toString(userID));
                     extras.putString("userIsManager", Integer.toString(userIsManager));
                     intent.putExtras(extras);
                     Log.d("TEST", "Lookup Activity Failed" + employeeID);

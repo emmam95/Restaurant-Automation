@@ -1,4 +1,5 @@
 package Model;
+
 /**
  * The Employee class has an object of the EmployeeInfo class.
  * It creates and updates the employee profile.
