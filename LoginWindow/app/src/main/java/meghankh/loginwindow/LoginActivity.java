@@ -131,7 +131,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 if (employeeID > 0) {
                     if (fetch.getEmployee(employeeID).getEmployeeInfo().getPassword().equals(password.getText().toString())
                         && fetch.getEmployee(employeeID).getEmployeeInfo().getInactive() == 0) {
-                        Intent intent = new Intent(context, ViewEmployeeInfo.class);
+                        Intent intent = new Intent(context, EditInfo.class);
                         Bundle extras = new Bundle();
                         extras.putString("employeeID", Integer.toString(employeeID));
                         extras.putString("userIsManager", Integer.toString(fetch.getEmployee(employeeID).getEmployeeInfo().getManager()));

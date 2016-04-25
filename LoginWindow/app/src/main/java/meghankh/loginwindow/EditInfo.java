@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.util.Log;
 
@@ -25,83 +26,152 @@ import Model.Utils;
 public class EditInfo extends ActionBarActivity {
 
     int employeeID;
+    Employee employee;
+    FetchData fetch;
+    int userIsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info);
-        Button changeAccountButton = (Button) findViewById(R.id.change_Account_But);
+
         Log.d("TEST", "Edit Info Activity");
         final Context context = this;
         Bundle extras = getIntent().getExtras();
         employeeID = 0;
+        userIsManager = 0;
         if (extras != null)
         {
             employeeID = new Integer(extras.getString("employeeID")).intValue();
             Log.d("TEST", "employeeID" + employeeID);
+            userIsManager = new Integer(extras.getString("userIsManager")).intValue();
+            Log.d("TEST", extras.getString("userIsManager"));
         }
         File path = context.getFilesDir();
         File file = new File(path, "employee.txt");
-        FetchData fetch = new FetchData();
+        fetch = new FetchData();
         fetch.parseData(context);
         Log.d("TEST", "employeeID" + employeeID);
-        Employee employee = fetch.getEmployee(employeeID);
+        employee = fetch.getEmployee(employeeID);
         EmployeeInfo info = employee.getEmployeeInfo();
         Log.d("TEST", "Employee: " + employeeID + " is " + info.getFirstName());
         Utils utils = new Utils();
 
-        TextView firstName = (TextView) findViewById(R.id.firstName);
+        EditText firstName = (EditText) findViewById(R.id.firstName);
         int byteLength = info.getFirstName().length();
         byte[] bytes = info.getFirstName().getBytes();
         char[] chars = utils.converToCharArray(bytes, byteLength);
         firstName.setText(chars, 0, byteLength);
 
-        TextView ssn = (TextView) findViewById(R.id.ssn);
+        EditText ssn = (EditText) findViewById(R.id.ssn);
         byteLength = info.getSSN().toString().length();
         bytes = info.getSSN().toString().getBytes();
         chars = utils.converToCharArray(bytes, byteLength);
         ssn.setText(chars, 0, byteLength);
 
-        TextView phone = (TextView) findViewById(R.id.phoneNumber);
+        EditText phone = (EditText) findViewById(R.id.phoneNumber);
         byteLength = info.getPhone().length();
         bytes = info.getPhone().getBytes();
         chars = utils.converToCharArray(bytes, byteLength);
         phone.setText(chars, 0, byteLength);
 
-        TextView address = (TextView) findViewById(R.id.address);
+        EditText address = (EditText) findViewById(R.id.address);
         byteLength = info.getAddress().length();
         bytes = info.getAddress().getBytes();
         chars = utils.converToCharArray(bytes, byteLength);
         address.setText(chars, 0, byteLength);
 
-        TextView lastName = (TextView) findViewById(R.id.lastName);
+        EditText lastName = (EditText) findViewById(R.id.lastName);
         byteLength = info.getLastName().length();
         bytes = info.getLastName().getBytes();
         chars = utils.converToCharArray(bytes, byteLength);
         lastName.setText(chars, 0, byteLength);
 
-        TextView password = (TextView) findViewById(R.id.password);
+        EditText password = (EditText) findViewById(R.id.password);
         byteLength = info.getPassword().length();
         bytes = info.getPassword().getBytes();
         chars = utils.converToCharArray(bytes, byteLength);
         password.setText(chars, 0, byteLength);
 
-        changeAccountButton.setOnClickListener(new View.OnClickListener() {
+        Button logoutButton = (Button) findViewById(R.id.logoutButton);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView ssn = (TextView) findViewById(R.id.ssn);
-                TextView phone = (TextView) findViewById(R.id.phoneNumber);
-                TextView address = (TextView) findViewById(R.id.address);
-                TextView firstName = (TextView) findViewById(R.id.firstName);
-                TextView lastName = (TextView) findViewById(R.id.lastName);
-                TextView password = (TextView) findViewById(R.id.password);
-                // Employee employee = new Employee(employeeID, 0, ssn.toString(), phone.toString(), address.toString(), firstName.toString(), lastName.toString(), 7.25, 40, password.toString());
-                WriteData writeData = new WriteData();
-                // writeData.addEmployee(context, employee);
-                Intent intent = new Intent(context, EditInfo.class);
-                intent.putExtra("employeeID", Integer.toString(employeeID));
-                Log.d("TEST", "Next Activity" + employeeID);
+                Intent intent = new Intent(context, LoginActivity.class);
+                Log.d("TEST", "Logout Activity" + employeeID);
                 startActivity(intent);
+            }
+        });
+
+        Button updateButton = (Button) findViewById(R.id.updateButton);
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Employee currentEmployee = fetch.getEmployee(employeeID);
+                EditText firstName = (EditText) findViewById(R.id.firstName);
+                currentEmployee.getEmployeeInfo().setFirstName(firstName.getText().toString());
+                EditText lastName = (EditText) findViewById(R.id.lastName);
+                currentEmployee.getEmployeeInfo().setLastName(lastName.getText().toString());
+                EditText ssn = (EditText) findViewById(R.id.ssn);
+                currentEmployee.getEmployeeInfo().setSSN(ssn.getText().toString());
+                EditText phone = (EditText) findViewById(R.id.phoneNumber);
+                currentEmployee.getEmployeeInfo().setPhone(phone.getText().toString());
+                EditText address = (EditText) findViewById(R.id.address);
+                currentEmployee.getEmployeeInfo().setAddress(address.getText().toString());
+                EditText password = (EditText) findViewById(R.id.password);
+                currentEmployee.getEmployeeInfo().setPassword(password.getText().toString());
+                fetch.updateEmployee(currentEmployee);
+                WriteData writer = new WriteData();
+                writer.updateDatabase(context, fetch.getEmployeeArray(), fetch.getNumberOfEmployee());
+                Intent intent = new Intent(context, EditInfo.class);
+                Bundle extras = new Bundle();
+                extras.putString("employeeID", Integer.toString(employeeID));
+                extras.putString("userIsManager", Integer.toString(userIsManager));
+                intent.putExtras(extras);
+                Log.d("TEST", "update Activity" + employeeID);
+                startActivity(intent);
+            }
+        });
+
+        EditText lookupFirstName = (EditText) findViewById(R.id.lookupFirstName);
+        EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
+        Button lookupButton = (Button) findViewById(R.id.lookupButton);
+
+        if (userIsManager == 0)
+        {
+            lookupFirstName.setVisibility(View.INVISIBLE);
+            lookupLastName.setVisibility(View.INVISIBLE);
+            lookupButton.setVisibility(View.INVISIBLE);
+        }
+
+        lookupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                EditText lookupFirstName = (EditText) findViewById(R.id.lookupFirstName);
+                EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
+                int lookupID = fetch.lookUpEmployeeID(lookupFirstName.getText().toString(), lookupLastName.getText().toString());
+                if (lookupID > 0) {
+                    Intent intent = new Intent(context, ViewEmployeeInfo.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("employeeID", Integer.toString(lookupID));
+                    extras.putString("userIsManager", Integer.toString(userIsManager));
+                    intent.putExtras(extras);
+                    Log.d("TEST", "Lookup Activity" + employeeID);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(context, EditInfo.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("employeeID", Integer.toString(employeeID));
+                    extras.putString("userIsManager", Integer.toString(userIsManager));
+                    intent.putExtras(extras);
+                    Log.d("TEST", "Lookup Activity Failed" + employeeID);
+                    startActivity(intent);
+                }
             }
         });
     }
