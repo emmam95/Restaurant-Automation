@@ -95,9 +95,9 @@ public class EditInfo extends ActionBarActivity {
                 TextView firstName = (TextView) findViewById(R.id.firstName);
                 TextView lastName = (TextView) findViewById(R.id.lastName);
                 TextView password = (TextView) findViewById(R.id.password);
-                Employee employee = new Employee(employeeID, 0, ssn.toString(), phone.toString(), address.toString(), firstName.toString(), lastName.toString(), 7.25, 40, password.toString());
+                // Employee employee = new Employee(employeeID, 0, ssn.toString(), phone.toString(), address.toString(), firstName.toString(), lastName.toString(), 7.25, 40, password.toString());
                 WriteData writeData = new WriteData();
-                writeData.addEmployee(context, employee);
+                // writeData.addEmployee(context, employee);
                 Intent intent = new Intent(context, EditInfo.class);
                 intent.putExtra("employeeID", Integer.toString(employeeID));
                 Log.d("TEST", "Next Activity" + employeeID);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.CheckBox;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,13 +44,22 @@ public class Register extends ActionBarActivity {
                 TextView firstName = (TextView) findViewById(R.id.firstName);
                 TextView lastName = (TextView) findViewById(R.id.lastName);
                 TextView password = (TextView) findViewById(R.id.password);
+                CheckBox checkManager = (CheckBox) findViewById(R.id.checkManager);
+                int isManager = 0;
+                if (checkManager.isChecked())
+                {
+                    isManager = 1;
+                }
                 Log.d("TEST", "Create " + firstName.toString() + " " + lastName.toString() + " " + password.toString());
-                Employee employee = new Employee(employeeID, 0, ssn.getText().toString(), phone.getText().toString(), address.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), 7.25, 40, password.getText().toString());
+                Employee employee = new Employee(employeeID, isManager, 0, ssn.getText().toString(), phone.getText().toString(), address.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), 7.25, 40, password.getText().toString());
                 Log.d("TEST", "Enter Data.");
                 WriteData writeData = new WriteData();
                 writeData.addEmployee(context, employee);
                 Intent intent = new Intent(context, ViewEmployeeInfo.class);
-                intent.putExtra("employeeID", Integer.toString(employeeID));
+                Bundle extras = new Bundle();
+                extras.putString("employeeID", Integer.toString(employeeID));
+                extras.putString("userIsManager", Integer.toString(isManager));
+                intent.putExtras(extras);
                 Log.d("TEST", "Next Activity" + employeeID);
                 startActivity(intent);
             }

@@ -83,6 +83,7 @@ public class FetchData {
             int numRecords = 0;
             int index = 0;
             int employeeID = 0;
+            int manager = 0;
             int inactive = 0;
             String ssn = "none";
             String phone = "none";
@@ -102,8 +103,9 @@ public class FetchData {
                     currentCell = "";
                     password = value;
                     Log.d("TEST", "STORED AT" + employeeID);
-                    employeeArr[employeeID] = new Employee(employeeID, inactive, ssn, phone, address, firstName, lastName, salary, hours, password);
+                    employeeArr[employeeID] = new Employee(employeeID, manager, inactive, ssn, phone, address, firstName, lastName, salary, hours, password);
                     employeeID = 0;
+                    manager = 0;
                     inactive = 0;
                     ssn = "none";
                     phone = "none";
@@ -124,27 +126,30 @@ public class FetchData {
                             employeeID = new Integer(value).intValue();
                             break;
                         case 1:
-                            inactive = new Integer(value).intValue();
+                            manager = new Integer(value).intValue();
                             break;
                         case 2:
-                            ssn = value;
+                            inactive = new Integer(value).intValue();
                             break;
                         case 3:
-                            phone = value;
+                            ssn = value;
                             break;
                         case 4:
-                            address = value;
+                            phone = value;
                             break;
                         case 5:
-                            firstName = value;
+                            address = value;
                             break;
                         case 6:
-                            lastName = value;
+                            firstName = value;
                             break;
                         case 7:
-                            salary = new Double(value).doubleValue();
+                            lastName = value;
                             break;
                         case 8:
+                            salary = new Double(value).doubleValue();
+                            break;
+                        case 9:
                             hours = new Double(value).doubleValue();
                             break;
                         default:
@@ -165,6 +170,11 @@ public class FetchData {
         }
         Log.d("TEST", "Finish Fetch");
         return 1;
+    }
+
+    public Employee[] getEmployeeArray()
+    {
+        return employeeArr;
     }
 
     public int getNumberOfEmployee()
@@ -192,5 +202,10 @@ public class FetchData {
             }
         }
         return -1;
+    }
+
+    public void updateEmployee(Employee updatedEmployee)
+    {
+        employeeArr[updatedEmployee.getEmployeeInfo().getEmployeeID()] = updatedEmployee;
     }
 }

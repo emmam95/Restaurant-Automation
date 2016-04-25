@@ -23,6 +23,8 @@ import Model.WriteData;
 public class ViewEmployeeInfo extends ActionBarActivity {
 
     int employeeID;
+    Employee employee;
+    FetchData fetch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +35,20 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         final Context context = this;
         Bundle extras = getIntent().getExtras();
         employeeID = 0;
+        int userIsManager = 0;
         if (extras != null)
         {
             employeeID = new Integer(extras.getString("employeeID")).intValue();
             Log.d("TEST", "employeeID" + employeeID);
+            userIsManager = new Integer(extras.getString("userIsManager")).intValue();
+            Log.d("TEST", extras.getString("userIsManager"));
         }
         File path = context.getFilesDir();
         File file = new File(path, "employee.txt");
-        FetchData fetch = new FetchData();
+        fetch = new FetchData();
         fetch.parseData(context);
         Log.d("TEST", "employeeID" + employeeID);
-        Employee employee = fetch.getEmployee(employeeID);
+        employee = fetch.getEmployee(employeeID);
         EmployeeInfo info = employee.getEmployeeInfo();
         Log.d("TEST", "Employee: " + employeeID + " is " + info.getFirstName());
         Utils utils = new Utils();
@@ -86,11 +91,31 @@ public class ViewEmployeeInfo extends ActionBarActivity {
 
         Button logoutButton = (Button) findViewById(R.id.logoutButton);
 
+        Button fireButton = (Button) findViewById(R.id.fireButton);
+
+        if (userIsManager == 0)
+        {
+            fireButton.setVisibility(View.INVISIBLE);
+        }
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, LoginActivity.class);
                 Log.d("TEST", "Logout Activity" + employeeID);
+                startActivity(intent);
+            }
+        });
+
+        fireButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, LoginActivity.class);
+                employee.getEmployeeInfo().setInactive(1);
+                fetch.updateEmployee(employee);
+                WriteData writer = new WriteData();
+                writer.updateDatabase(context, fetch.getEmployeeArray(), fetch.getNumberOfEmployee());
+                Log.d("TEST", "Terminated Activity" + employeeID);
                 startActivity(intent);
             }
         });

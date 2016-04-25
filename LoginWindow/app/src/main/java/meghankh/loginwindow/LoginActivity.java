@@ -121,7 +121,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         email_sign_in_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("TEST", "Clicked Signin");
+                Log.d("TEST", "Clicked Sign In");
                 TextView firstName = (TextView) findViewById(R.id.firstName);
                 TextView lastName = (TextView) findViewById(R.id.lastName);
                 TextView password = (TextView) findViewById(R.id.password);
@@ -129,22 +129,27 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 int employeeID = fetch.lookUpEmployeeID(firstName.getText().toString(), lastName.getText().toString());
                 Log.d("TEST", "Found ID " + employeeID);
                 if (employeeID > 0) {
-                    if (fetch.getEmployee(employeeID).getEmployeeInfo().getPassword().equals(password.getText().toString())) {
+                    if (fetch.getEmployee(employeeID).getEmployeeInfo().getPassword().equals(password.getText().toString())
+                        && fetch.getEmployee(employeeID).getEmployeeInfo().getInactive() == 0) {
                         Intent intent = new Intent(context, ViewEmployeeInfo.class);
-                        intent.putExtra("employeeID", Integer.toString(employeeID));
+                        Bundle extras = new Bundle();
+                        extras.putString("employeeID", Integer.toString(employeeID));
+                        extras.putString("userIsManager", Integer.toString(fetch.getEmployee(employeeID).getEmployeeInfo().getManager()));
+                        intent.putExtras(extras);
+                        Log.d("TEST", "Person is a manager: " + fetch.getEmployee(employeeID).getEmployeeInfo().getManager());
                         startActivity(intent);
                     }
                     else
                     {
                         Intent intent = new Intent(context, LoginActivity.class);
-                        intent.putExtra("Error", "There was an issue with your Name/Password Combination. Please Try Again.");
+                        intent.putExtra("Error", "Invalid Login.");
                         startActivity(intent);
                     }
                 }
                 else
                 {
                     Intent intent = new Intent(context, LoginActivity.class);
-                    intent.putExtra("Error", "There was an issue with your Name/Password Combination. Please Try Again.");
+                    intent.putExtra("Error", "Invalid Login.");
                     startActivity(intent);
                 }
             }

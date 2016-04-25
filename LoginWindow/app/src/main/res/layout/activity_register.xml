@@ -144,14 +144,26 @@
         android:layout_toRightOf="@+id/passwordLabel"
         android:layout_below="@+id/address" />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I am a Manager"
+        android:id="@+id/checkManager"
+        android:layout_below="@+id/passwordLabel"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create"
         android:id="@+id/create_Account_But"
-        android:layout_below="@+id/passwordLabel"
+        android:layout_below="@+id/checkManager"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="10dp"
         android:layout_alignParentStart="true" />
+
+
 
 </RelativeLayout>

@@ -10,6 +10,7 @@ package Model;
 public class EmployeeInfo
 {
     private int employeeID;  // id for employee
+    private int manager;
     private int inactive;
     private String SSN;         // social security number for employee
     private String phone;       // phone number
@@ -36,6 +37,7 @@ public class EmployeeInfo
      */
     public EmployeeInfo(
         int employeeID,
+        int manager,
         int inactive,
         String SSN,
         String phone,
@@ -46,6 +48,7 @@ public class EmployeeInfo
         double hours,
         String password)
     {
+        this.manager = manager;
         this.inactive = inactive;
         this.employeeID = employeeID;
         this.SSN = SSN;
@@ -57,6 +60,10 @@ public class EmployeeInfo
         this.hours = hours;
         this.password = password;
     }
+
+    public int getManager() { return manager; }
+
+    public void setManager(int state) { manager = state; }
 
     public int getInactive() { return inactive; }
 

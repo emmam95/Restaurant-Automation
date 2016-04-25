@@ -11,12 +11,12 @@ public class Employee {
     /**
      * Create a new Employee object.
      */
-    public Employee(int employeeID, int inactive,
+    public Employee(int employeeID, int manager, int inactive,
         String ssn, String phone, String address,
         String firstname, String lastname, double salary,
         double hours, String password)
     {
-        employeeInfo = new EmployeeInfo(employeeID, inactive, ssn, phone,
+        employeeInfo = new EmployeeInfo(employeeID, manager, inactive, ssn, phone,
             address, firstname, lastname, salary, hours, password);
     }
 
