@@ -26,6 +26,7 @@ public class Register extends ActionBarActivity {
         Button createAccountButton = (Button) findViewById(R.id.create_Account_But);
         final Context context = this;
         Log.d("TEST", "PLEASE DISPLAY LOG CAT");
+        //fetch data in order to figure out the next available employee id number
         FetchData fetch = new FetchData();
         fetch.parseData(context);
         employeeID = fetch.getNumberOfEmployee() + 1;
@@ -46,6 +47,7 @@ public class Register extends ActionBarActivity {
                     isManager = 1;
                 }
                 Log.d("TEST", "Create " + firstName.toString() + " " + lastName.toString() + " " + password.toString());
+                //create a new employee object with the data set in the fields
                 Employee employee = new Employee(employeeID, isManager, 0, ssn.getText().toString(), phone.getText().toString(), address.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), 7.25, 40, password.getText().toString());
                 Log.d("TEST", "Enter Data.");
                 WriteData writeData = new WriteData();

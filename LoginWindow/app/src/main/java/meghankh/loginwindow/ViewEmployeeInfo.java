@@ -55,7 +55,7 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         EmployeeInfo info = employee.getEmployeeInfo();
         Log.d("TEST", "Employee: " + employeeID + " is " + info.getFirstName());
         Utils utils = new Utils();
-
+        //displaying information about employee
         TextView firstName = (TextView) findViewById(R.id.firstName);
         int byteLength = info.getFirstName().length();
         byte[] bytes = info.getFirstName().getBytes();
@@ -129,6 +129,7 @@ public class ViewEmployeeInfo extends ActionBarActivity {
         fireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //when firing an employee it flags that employee as inactive and updates the database
                 Intent intent = new Intent(context, ViewEmployeeInfo.class);
                 employee.getEmployeeInfo().setInactive(1);
                 fetch.updateEmployee(employee);
@@ -150,9 +151,9 @@ public class ViewEmployeeInfo extends ActionBarActivity {
                 EditText lookupFirstName = (EditText) findViewById(R.id.lookupFirstName);
                 EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
                 int lookupID = fetch.lookUpEmployeeID(lookupFirstName.getText().toString(), lookupLastName.getText().toString());
-                if (lookupID > 0) {
+                if (lookupID > 0) { //if employee exists
                     Intent intent;
-                    if (userID == lookupID) {
+                    if (userID == lookupID) { //if looking up yourself
                         intent = new Intent(context, EditInfo.class);
                     }
                     else {

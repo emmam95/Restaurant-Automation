@@ -26,18 +26,20 @@ public class FetchData {
     public int parseData(Context context) {
         File path = context.getFilesDir();
         File file = new File(path, "employee.txt");
-        if (file.length() == 0) {
+        if (file.length() == 0) { //if empty create new file
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 return -1;
             }
             int length = (int) file.length();
+            //stores whatever is in the text file
             byte[] bytes = new byte[length];
             try {
                 FileInputStream in = new FileInputStream(file);
                 try {
                     in.read(bytes);
+                    //for debugging
                     String result = "";
                     for (int i = 0; i < length; i++) {
                         result += (char) bytes[i];
@@ -61,7 +63,7 @@ public class FetchData {
             try {
                 FileInputStream in = new FileInputStream(file);
                 try {
-                    in.read(bytes);
+                    in.read(bytes); //stores text file contents in array
                     String result = "";
                     for (int i = 0; i < length; i++) {
                         result += (char) bytes[i];
@@ -97,12 +99,14 @@ public class FetchData {
             Log.d("TEST", "Traverse Array of " + length);
             while (index < length) {
                 Log.d("TEST", index + " " + (char) bytes[index]);
-                if (bytes[index] == 36) {
+                if (bytes[index] == 36) { //if it is a money sign indicating a new employee
                     String value = currentCell;
                     currentCell = "";
-                    password = value;
+                    password = value; //password is last cell before money sign
                     Log.d("TEST", "STORED AT" + employeeID);
+                    //create the employee object and store it in the array
                     employeeArr[employeeID] = new Employee(employeeID, manager, inactive, ssn, phone, address, firstName, lastName, salary, hours, password);
+                    //clear data for new object
                     employeeID = 0;
                     manager = 0;
                     inactive = 0;
@@ -117,7 +121,7 @@ public class FetchData {
                     numRecords++;
                     column = 0;
                 }
-                else if (bytes[index] == 124) {
+                else if (bytes[index] == 124) { //if | indicates new cell
                     String value = currentCell;
                     Log.d("TEST", "Value of column: " + column + " is " + value);
                     switch (column) {

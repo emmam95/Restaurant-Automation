@@ -26,7 +26,7 @@ public void updateDatabase(Context context, Employee[] EmployeeArray, int number
     try {
         FileOutputStream stream = new FileOutputStream(file);
         try {
-            stream.flush();
+            stream.flush(); //guarantee nothing inside buffer
             for (int i = 1; i < numberOfEmployees + 1; i ++)
             {
                 Employee currentEmployee  = EmployeeArray[i];

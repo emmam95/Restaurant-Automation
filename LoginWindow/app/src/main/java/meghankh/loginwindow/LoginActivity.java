@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.FetchData;
-import Model.PseudoDatabase;
 
 /**
  * A login screen that offers login via email/password.
@@ -34,17 +33,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private PseudoDatabase database;
     FetchData fetch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        //Bundles are used to transfer data between activities
         Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
+            //Displays error message that was set in a previous activity
             String errorMessageText = extras.getString("Error");
             TextView errorMessage = (TextView) findViewById(R.id.errorMessage);
             errorMessage.setText(errorMessageText);
@@ -53,11 +52,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         Button registerButton = (Button) findViewById(R.id.register_but);
         Button email_sign_in_button = (Button) findViewById(R.id.email_sign_in_button);
         final Context context = this;
-
+        //parse the text file containing employee information
         fetch = new FetchData();
         fetch.parseData(context);
         Log.d("TEST", "Parsed Data");
 
+        //when register button is clicked change the activity to register activity
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,21 +65,27 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             startActivity(intent);
             }
         });
-
+        //when sign in button is clicked
         email_sign_in_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
             Log.d("TEST", "Clicked Sign In");
+            //get info off textviews
             EditText firstName = (EditText) findViewById(R.id.firstName);
             EditText lastName = (EditText) findViewById(R.id.lastName);
             EditText password = (EditText) findViewById(R.id.password);
             Log.d("TEST", "Lookup " + firstName.getText().toString() + " " + lastName.getText().toString());
+            //grab the emloyee ID based on first and lastname
             int employeeID = fetch.lookUpEmployeeID(firstName.getText().toString(), lastName.getText().toString());
             Log.d("TEST", "Found ID " + employeeID);
+            //if this employee exists
             if (employeeID > 0) {
+                //if password is correct and the employee has not been terminated. getInactive() is a method that returns a status of termination
                 if (fetch.getEmployee(employeeID).getEmployeeInfo().getPassword().equals(password.getText().toString())
                     && fetch.getEmployee(employeeID).getEmployeeInfo().getInactive() == 0) {
+                    //go to edit profile
                     Intent intent = new Intent(context, EditInfo.class);
+                    //bundle some info to go to new activity
                     Bundle extras = new Bundle();
                     extras.putString("employeeID", Integer.toString(employeeID));
                     extras.putString("userID", Integer.toString(employeeID));
@@ -105,7 +111,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         });
 
         Button tipButton = (Button) findViewById(R.id.tipButton);
-
+        //go to tip activity
         tipButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

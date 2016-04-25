@@ -48,6 +48,7 @@ public class EditInfo extends ActionBarActivity {
         }
         File path = context.getFilesDir();
         File file = new File(path, "employee.txt");
+        //fetch the data from the textfile
         fetch = new FetchData();
         fetch.parseData(context);
         Log.d("TEST", "employeeID" + employeeID);
@@ -55,7 +56,7 @@ public class EditInfo extends ActionBarActivity {
         EmployeeInfo info = employee.getEmployeeInfo();
         Log.d("TEST", "Employee: " + employeeID + " is " + info.getFirstName());
         Utils utils = new Utils();
-
+        //Below is just setting the text inside the textviews to what their current values are
         EditText firstName = (EditText) findViewById(R.id.firstName);
         int byteLength = info.getFirstName().length();
         byte[] bytes = info.getFirstName().getBytes();
@@ -105,6 +106,7 @@ public class EditInfo extends ActionBarActivity {
 
         Button updateButton = (Button) findViewById(R.id.updateButton);
 
+        //updating objects and database with new info
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,7 +140,7 @@ public class EditInfo extends ActionBarActivity {
         EditText lookupFirstName = (EditText) findViewById(R.id.lookupFirstName);
         EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
         Button lookupButton = (Button) findViewById(R.id.lookupButton);
-
+        //if you arent a manager you cant look up employees
         if (userIsManager == 0)
         {
             lookupFirstName.setVisibility(View.INVISIBLE);
@@ -153,12 +155,14 @@ public class EditInfo extends ActionBarActivity {
                 EditText lookupFirstName = (EditText) findViewById(R.id.lookupFirstName);
                 EditText lookupLastName = (EditText) findViewById(R.id.lookupLastName);
                 int lookupID = fetch.lookUpEmployeeID(lookupFirstName.getText().toString(), lookupLastName.getText().toString());
+                //if employee exists
                 if (lookupID > 0) {
                     Intent intent;
+                    //if looking up yourself, make it edittable
                     if (userID == lookupID) {
                         intent = new Intent(context, EditInfo.class);
                     }
-                    else {
+                    else { //else make it view only
                         intent = new Intent(context, ViewEmployeeInfo.class);
                     }
                     Bundle extras = new Bundle();
