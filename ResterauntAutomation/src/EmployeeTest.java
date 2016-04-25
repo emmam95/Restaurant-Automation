@@ -1,4 +1,4 @@
-import student.TestCase;
+import junit.framework.*;
 
 public class EmployeeTest
     extends TestCase
