@@ -52,7 +52,7 @@
         android:text="Final Total:"
         android:id="@+id/totalLabel"
         android:background="#ff4fffa8"
-        android:layout_below="@+id/totalWTax"
+        android:layout_below="@+id/tipAmount"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -62,7 +62,7 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:textSize="20dp"
-        android:id="@+id/totalWTax"
+        android:id="@+id/tipAmount"
         android:width="200dp"
         android:layout_below="@+id/textView"
         android:layout_alignParentRight="true"
@@ -75,7 +75,7 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:textSize="20dp"
-        android:id="@+id/tipAmount"
+        android:id="@+id/totalWTax"
         android:width="200dp"
         android:layout_alignTop="@+id/totalWTaxLabel"
         android:layout_alignParentRight="true"
